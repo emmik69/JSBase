@@ -1,6 +1,5 @@
 function getOlderUser(user1, user2) {
-  let nameOlderUser = user1.age > user2.age ? user1.age : user2.age;
-  return nameOlderUser;
+  return user1.age > user2.age ? user1.age : user2.age;
 }
 
 function getOlderUserArray(arrayUsers) {
@@ -11,13 +10,7 @@ function getOlderUserArray(arrayUsers) {
 }
 
 function filter(arrayUsers, key, value) {
-  let sortArrayUsers = [];
-  for (let element of arrayUsers) {
-    if (element[key] === value) {
-      sortArrayUsers.push(element);
-    }
-  }
-  return sortArrayUsers;
+  return arrayUsers.filter((user) => user[key] === value);
 }
 
 // проверка задания 1
