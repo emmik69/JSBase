@@ -5,24 +5,11 @@ function getAge(birthDate) {
 }
 
 function filter(whiteList, blackList) {
-  let clearList = [];
-  for (let email of whiteList) {
-    if (!blackList.includes(email)) {
-      clearList.push(email);
-    }
-  }
-  return clearList;
+  return whiteList.filter((email) => !blackList.includes(email));
 }
 
 function arrSort(array) {
-  for (let i in array) {
-    for (let j = 0; j < array.length - 1; j++) {
-      if (array[i] < array[j]) {
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-  }
-  return array;
+  return array.sort((a, b) => a - b);
 }
 
 // проверка задания 1

@@ -26,20 +26,13 @@ function shuffleArray(count) {
 }
 
 function searchElement(array, element) {
-  for (let index in array) {
-    if (array[index] === element) {
-      console.log('Индекс элемента:', index);
-      return;
-    }
-  }
-  console.log('Элемент не найден');
+  let index = array.indexOf(element);
+  console.log(index >= 0 ? `Индекс элемента: ${index}` : 'Элемент не найден');
 }
 
 function combiningArrays(firstArray, secondArray) {
-  for (let i in secondArray) {
-    firstArray.push(secondArray[i]);
-  }
-  console.log(firstArray);
+  let newArray = [...firstArray, ...secondArray];
+  console.log(newArray);
 }
 
 // проверка задания 1
