@@ -10,6 +10,7 @@ function getOlderUserArray(arrayUsers) {
 }
 
 function filter(arrayUsers, key, value) {
+  // arrayUsers.push({ name: 'Эмм', age: 19 });
   return arrayUsers.filter((user) => user[key] === value);
 }
 
@@ -46,4 +47,6 @@ let objects = [
   { name: 'Пётр', surname: 'Петров' },
 ];
 
+// console.log(objects);
 console.log(filter(objects, 'name', 'Иван'));
+// console.log(objects);
