@@ -46,12 +46,7 @@
 
   function getMaximumId(nameArray) {
     let array = getData(nameArray);
-    let maxId = 0;
-
-    array = array ? array : [];
-    if (array.length > 0) {
-      maxId = array[array.length - 1].id + 1;
-    }
+    let maxId = array?.length ? array[array.length - 1].id + 1 : 0;
 
     return maxId;
   }
@@ -109,11 +104,9 @@
 
   function todoCompleted(todoItem, nameArray) {
     let array = getData(nameArray);
-    for (let index in array) {
-      if (array[index].id === todoItem.id) {
-        array[index].done = true ? array[index].done === false : false;
-      }
-    }
+    array = array.map((el) =>
+      el.id === todoItem.id ? { ...el, done: !el.done } : el
+    );
 
     setData(array, nameArray);
     todoItem.item.classList.toggle('list-group-item-success');
@@ -139,7 +132,7 @@
 
     for (let el of locStrgArray) {
       let todoItem = createTodoItem(el);
-      if (el.done === true) {
+      if (el.done) {
         todoItem.item.classList.toggle('list-group-item-success');
       }
       addEverntToBtn(todoItem, listName);
@@ -150,12 +143,8 @@
     container.append(todoItemForm.form);
     container.append(todoList);
 
-    function updateButtonState() {
-      todoItemForm.button.disabled = !todoItemForm.input.value.trim();
-    }
-
     todoItemForm.input.addEventListener('input', function () {
-      updateButtonState();
+      todoItemForm.button.disabled = !todoItemForm.input.value.trim();
     });
 
     todoItemForm.form.addEventListener('submit', function (e) {
@@ -175,7 +164,7 @@
       todoList.append(todoItem.item);
 
       todoItemForm.input.value = '';
-      updateButtonState();
+      todoItemForm.button.disabled = true;
     });
   }
 
