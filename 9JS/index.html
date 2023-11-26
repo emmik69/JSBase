@@ -11,14 +11,40 @@
   <body>
     <div class="win-game">
       <div class="win-game__block">
-        Вы собрали все пары.<br />Молодец!
+        <span class="end-text">Вы собрали все пары.<br />Молодец!</span>
         <button class="new-game-btn">Новая игра</button>
       </div>
     </div>
     <div class="wrapper">
-      <button class="start-btn">Жмякай</button>
+      <form class="form" action="#">
+        <p>Кол.-во карточек:</p>
+        <div>
+          <span>По вертикале</span>
+          <input
+            class="form__input"
+            type="number"
+            placeholder="Вертикаль"
+            min="2"
+            max="10"
+            value="4"
+          />
+        </div>
+        <div>
+          <span>По горизонтале</span>
+          <input
+            class="form__input"
+            type="number"
+            placeholder="Горизонталь"
+            min="2"
+            max="10"
+            value="4"
+          />
+        </div>
+        <button class="start-btn">Жмякай</button>
+      </form>
       <div class="main-container">
         <h1>Пары</h1>
+        <span class="time">00:00</span>
         <div class="game"></div>
         <button class="end-game-btn">Закончить</button>
       </div>

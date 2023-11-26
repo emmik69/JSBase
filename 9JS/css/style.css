@@ -2,7 +2,8 @@
   box-sizing: border-box;
 }
 
-h1 {
+h1,
+p {
   margin: 0;
   font-size: 32px;
   font-weight: 900;
@@ -19,6 +20,29 @@ body {
   align-items: center;
   min-width: 1418px;
   height: 100vh;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 400px;
+  height: 350px;
+  border: 1px solid #000;
+}
+
+.form__input {
+  outline: none;
+  border-radius: 7px;
+  border: 0;
+  width: 50px;
+  padding: 0;
+  padding-left: 15px;
+  height: 30px;
+  color: #fff;
+  background-color: #091b62;
 }
 
 .start-btn {
@@ -43,13 +67,22 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  width: 946px;
+  width: calc(
+    var(--wCard) * var(--count) + var(--gap) * (var(--count) - 1) + 1px
+  );
   height: 100%;
+}
+
+.time {
+  color: green;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .game {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
   gap: var(--gap);
   width: 100%;
   height: 860px;
@@ -63,8 +96,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 220px;
-  max-height: 200px;
+  max-width: var(--wCard);
+  max-height: var(--hCard);
   border: 1px solid #000;
   font-size: 28px;
   font-weight: 600;
@@ -74,9 +107,9 @@ body {
   transform: scaleX(-1);
 }
 
-.game__block:nth-child(4n) {
+/* .game__block:nth-child(5n) {
   flex-basis: 100%;
-}
+} */
 
 .game__block:hover .content:after {
   width: 100%;
@@ -103,8 +136,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px;
-  width: 220px;
+  height: var(--hCard);
+  width: var(--wCard);
   background: #060c21;
 }
 
@@ -163,6 +196,7 @@ body {
   gap: 20px;
   justify-content: center;
   align-items: center;
+  border-radius: 30px;
   width: 350px;
   height: 250px;
   font-weight: 800;
