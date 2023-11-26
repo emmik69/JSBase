@@ -1,0 +1,234 @@
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+body {
+  color: #fff;
+  background-color: #060c21;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 1418px;
+  height: 100vh;
+}
+
+.start-btn {
+  border-radius: 15px;
+  border: 0;
+  width: 140px;
+  height: 60px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  cursor: pointer;
+  background-color: green;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.start-btn:hover {
+  background-color: rgb(61, 161, 61);
+}
+
+.main-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 946px;
+  height: 100%;
+}
+
+.game {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  width: 100%;
+  height: 860px;
+}
+
+.game__block {
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 220px;
+  max-height: 200px;
+  border: 1px solid #000;
+  font-size: 28px;
+  font-weight: 600;
+  color: transparent;
+  background: rgba(255, 255, 255, 0);
+  transition: transform 0.4s, color 0.4s;
+  transform: scaleX(-1);
+}
+
+.game__block:nth-child(4n) {
+  flex-basis: 100%;
+}
+
+.game__block:hover .content:after {
+  width: 100%;
+  margin-left: 0%;
+  transform: skew(0deg);
+}
+
+.game__block:before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  bottom: -2px;
+  right: -2px;
+  background: #fff;
+  transform: skew(2deg, 2deg);
+  z-index: -1;
+  background: linear-gradient(315deg, #e91e63, #5d02ff);
+}
+
+.content {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 220px;
+  background: #060c21;
+}
+
+.content:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 60%;
+  margin-left: 15%;
+  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  transform: skew(45deg);
+  overflow: hidden;
+  transition: 0.25s;
+}
+
+.showCard {
+  color: #fff;
+  transform: scaleX(1);
+}
+
+.end-game-btn {
+  border-radius: 15px;
+  border: 0;
+  width: 140px;
+  height: 60px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  cursor: pointer;
+  background-color: green;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.end-game-btn:hover {
+  background-color: rgb(61, 161, 61);
+}
+
+.win-game {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(98, 255, 50, 0.1);
+}
+
+.win-game__block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 250px;
+  font-weight: 800;
+  font-size: 28px;
+  text-align: center;
+  background-color: #060c21;
+  z-index: 5;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: '';
+    border-radius: 30px;
+    border: 1px solid #000;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+  }
+
+  &::before {
+    z-index: -1;
+    background: #040a22;
+  }
+
+  &::after {
+    --gradientColor1: #09ec3a;
+    --gradientColor2: #040c27;
+    --gradientColor3: #37a5ee;
+    z-index: -2;
+    background: linear-gradient(
+      235deg,
+      var(--gradientColor1),
+      var(--gradientColor2),
+      var(--gradientColor3)
+    );
+    filter: blur(40px);
+    animation: glow 4s cubic-bezier(0.53, 1.63, 0.6, -1.67) infinite;
+  }
+}
+
+@keyframes glow {
+  50% {
+    --gradientColor1: rgba(9, 236, 58, 0.6);
+    --gradientColor2: rgba(4, 12, 39, 0.6);
+    --gradientColor3: rgba(55, 165, 238, 0.6);
+  }
+}
+
+.new-game-btn {
+  border-radius: 15px;
+  border: 0;
+  width: 180px;
+  height: 55px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  cursor: pointer;
+  background-color: green;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.new-game-btn:hover {
+  background-color: rgb(61, 161, 61);
+}
+
+:root {
+  --gap: 1.05vw;
+}
