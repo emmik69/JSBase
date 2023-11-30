@@ -23,14 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (firstCard.classList.contains('showCard')) {
       firstCard.classList.remove('showCard');
       count = 0;
-      secondCard = 0;
-      data = -1;
+      secondCard = null;
     } else {
       firstCard.classList.add('showCard');
     }
 
     if (count === 2) {
-      if (data === firstCard.textContent) {
+      if (secondCard.textContent === firstCard.textContent) {
         countPair += 1;
         firstCard.removeEventListener('click', showCard);
         secondCard.removeEventListener('click', showCard);
@@ -42,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
       count = 0;
     } else if (count === 1) {
       secondCard = firstCard;
-      data = firstCard.textContent;
     }
     if (countPair === sum / 2) {
       seconds = 0;
@@ -195,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let sum = 0;
   let seconds = 0;
   let count = 0;
-  let data = -1;
   let secondCard = 0;
   let countPair = 0;
 

@@ -1,0 +1,9 @@
+const age = (str) => {
+    let [date, month, year] = str.match(/(\d+)/g);
+    --month;
+    let now = new Date();
+    let nowYear = now.getFullYear(),
+      nowMonth = now.getMonth(),
+      nowDate = now.getDate();
+    return nowYear - year - (0 > (nowMonth - month || nowDate - date));
+  };
