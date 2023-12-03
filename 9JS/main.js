@@ -4,48 +4,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const newGmeBtn = document.querySelector('.new-game-btn');
   const forma = document.querySelector('.form');
   const mainContainer = document.querySelector('.main-container');
-  const gameWindow = document.querySelector('.game');
+  const gameWindow = document.querySelector('.gameGrid');
   const winGameWindow = document.querySelector('.win-game');
   const timer = document.querySelector('.time');
   const endText = document.querySelector('.end-text');
 
-  function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  async function showCard(e) {
+  function showCard(e) {
     const firstCard = e.target.closest('.game__block');
-    if (count >= 2) {
-      return;
-    }
-
-    count += 1;
     if (firstCard.classList.contains('showCard')) {
       firstCard.classList.remove('showCard');
-      count = 0;
-      secondCard = null;
-    } else {
+      return;
+    }
+    if (document.querySelectorAll('.showCard').length < 2) {
       firstCard.classList.add('showCard');
-    }
+      const cordList = document.querySelectorAll('.showCard');
+      if (cordList.length > 1) {
+        if (cordList[0].textContent == cordList[1].textContent) {
+          cordList[0].classList.add('matchСard');
+          cordList[1].classList.add('matchСard');
 
-    if (count === 2) {
-      if (secondCard.textContent === firstCard.textContent) {
-        countPair += 1;
-        firstCard.removeEventListener('click', showCard);
-        secondCard.removeEventListener('click', showCard);
-      } else {
-        await delay(700);
-        firstCard.classList.remove('showCard');
-        secondCard.classList.remove('showCard');
+          cordList[1].classList.remove('showCard');
+          cordList[0].classList.remove('showCard');
+
+          cordList[0].removeEventListener('click', showCard);
+          cordList[1].removeEventListener('click', showCard);
+          if (document.querySelectorAll('.matchСard').length == sum) {
+            clearInterval(timerInterval);
+            winGameWindow.classList.add('flex');
+            winGameWindow.classList.remove('win-game_red-bg');
+            winGameWindow.classList.add('win-game_green-bg');
+            endText.innerHTML = 'Вы собрали все пары.<br />Молодец!';
+            newGmeBtn.addEventListener('click', newGame);
+          }
+        } else {
+          setTimeout(() => {
+            cordList[1].classList.remove('showCard');
+            cordList[0].classList.remove('showCard');
+          }, 700);
+        }
       }
-      count = 0;
-    } else if (count === 1) {
-      secondCard = firstCard;
-    }
-    if (countPair === sum / 2) {
-      seconds = 0;
-      winGameWindow.style.display = 'flex';
-      newGmeBtn.addEventListener('click', newGame);
     }
   }
 
@@ -77,12 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showGame() {
-    countPair = 0;
     seconds = complexity * 60;
     clearInterval(timerInterval);
     timerInterval = setInterval(updateTimer, 1000);
-    forma.style.display = 'none';
-    mainContainer.style.display = 'flex';
+    forma.classList.remove('flex');
+    mainContainer.classList.add('flex');
     let shuffList = pairsNumbers();
     shuffList.map((el) => createCard(el));
     const cards = document.querySelectorAll('.game__block');
@@ -90,21 +86,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function endGame() {
-    seconds = -1;
-    mainContainer.style.display = 'none';
+    clearInterval(timerInterval);
+    mainContainer.classList.remove('flex');
     gameWindow.innerHTML = '';
-    forma.style.display = 'flex';
+    forma.classList.add('flex');
   }
 
   function newGame() {
-    countPair = 0;
     seconds = complexity * 60;
     clearInterval(timerInterval);
     timerInterval = setInterval(updateTimer, 1000);
-    endText.innerHTML = 'Вы собрали все пары.<br />Молодец!';
-    winGameWindow.style.backgroundColor = 'rgba(98, 255, 50, 0.1)';
     gameWindow.innerHTML = '';
-    winGameWindow.style.display = 'none';
+    winGameWindow.classList.remove('flex');
     let shuffList = pairsNumbers();
     shuffList.map((el) => createCard(el));
     const cards = document.querySelectorAll('.game__block');
@@ -123,33 +116,23 @@ document.addEventListener('DOMContentLoaded', () => {
       let cWCard = parseInt(inputs[1].value, 10);
       let cHCard = parseInt(inputs[0].value, 10);
       varRoot.style.setProperty('--count', Math.max(cWCard, cHCard));
-      varRoot.style.setProperty('--wCard', '220px');
-      varRoot.style.setProperty('--hCard', '200px');
+
+      varRoot.style.setProperty('--nHorizontal', cWCard);
+      varRoot.style.setProperty('--nVertical', cHCard);
       complexity = 1;
       if (cHCard === 2) {
-        complexity = 0.3;
+        complexity = 0.5;
       }
-      if (cWCard >= 8) {
-        varRoot.style.setProperty('--wCard', '150px');
-        complexity = 1.5;
-      }
-      if (cHCard >= 8) {
-        varRoot.style.setProperty('--hCard', '170px');
+      if (cWCard >= 8 || cHCard >= 8) {
         complexity = 1.5;
       }
       if (cWCard * cHCard >= 36) {
-        varRoot.style.setProperty('--wCard', '140px');
-        varRoot.style.setProperty('--hCard', '125px');
         complexity = 2;
       }
       if (cWCard * cHCard >= 64) {
-        varRoot.style.setProperty('--wCard', '100px');
-        varRoot.style.setProperty('--hCard', '90px');
         complexity = 3;
       }
       if (cWCard * cHCard === 100) {
-        varRoot.style.setProperty('--wCard', '100px');
-        varRoot.style.setProperty('--hCard', '68px');
         complexity = 4.5;
       }
       showGame();
@@ -163,12 +146,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateTimer() {
     if (seconds === 0) {
       clearInterval(timerInterval);
-      if (countPair !== sum / 2) {
+      if (document.querySelectorAll('.matchСard').length !== sum) {
         endText.innerHTML = 'Время вышло!<br>Попробуй ещё)';
-        winGameWindow.style.backgroundColor = 'rgba(255, 50, 50, 0.195)';
+        winGameWindow.classList.remove('win-game_green-bg');
+        winGameWindow.classList.add('win-game_red-bg');
         const cards = document.querySelectorAll('.game__block');
         cards.forEach((el) => el.removeEventListener('click', showCard));
-        winGameWindow.style.display = 'flex';
+        winGameWindow.classList.add('flex');
         newGmeBtn.addEventListener('click', newGame);
       }
       return;
@@ -192,9 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let timerInterval = 0;
   let sum = 0;
   let seconds = 0;
-  let count = 0;
-  let secondCard = 0;
-  let countPair = 0;
 
   CSS.registerProperty({
     name: '--gradientColor1',

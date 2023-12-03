@@ -23,7 +23,7 @@ body {
 }
 
 .form {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -67,9 +67,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  width: calc(
-    var(--wCard) * var(--count) + var(--gap) * (var(--count) - 1) + 1px
-  );
+  width: calc(220px * var(--count) + var(--gap) * (var(--count) - 1) + 1px);
   height: 100%;
 }
 
@@ -88,6 +86,16 @@ body {
   height: 860px;
 }
 
+.gameGrid {
+  height: 850px;
+  width: 1150px;
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: repeat(var(--nHorizontal), 1fr);
+  grid-template-rows: repeat(var(--nVertical), 1fr);
+  grid-gap: var(--gap);
+}
+
 .game__block {
   position: relative;
   padding: 0;
@@ -96,20 +104,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: var(--wCard);
-  max-height: var(--hCard);
   border: 1px solid #000;
   font-size: 28px;
   font-weight: 600;
   color: transparent;
   background: rgba(255, 255, 255, 0);
-  transition: transform 0.4s, color 0.4s;
+  transition: transform 0.3s, color 0.2s;
   transform: scaleX(-1);
 }
-
-/* .game__block:nth-child(5n) {
-  flex-basis: 100%;
-} */
 
 .game__block:hover .content:after {
   width: 100%;
@@ -136,8 +138,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: var(--hCard);
-  width: var(--wCard);
+  width: 100%;
+  height: 100%;
   background: #060c21;
 }
 
@@ -158,6 +160,11 @@ body {
 }
 
 .showCard {
+  color: #fff;
+  transform: scaleX(1);
+}
+
+.matchСard {
   color: #fff;
   transform: scaleX(1);
 }
@@ -186,7 +193,14 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
+}
+
+.win-game_green-bg {
   background-color: rgba(98, 255, 50, 0.1);
+}
+
+.win-game_red-bg {
+  background-color: rgba(255, 50, 50, 0.195);
 }
 
 .win-game__block {
@@ -261,6 +275,10 @@ body {
 
 .new-game-btn:hover {
   background-color: rgb(61, 161, 61);
+}
+
+.flex {
+  display: flex;
 }
 
 :root {
