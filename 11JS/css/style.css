@@ -31,8 +31,9 @@ form {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid #000000ac;
   background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .filter__container {
@@ -66,8 +67,11 @@ form {
 body {
   position: relative;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.9);
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(45deg, #49a09d, #5f2c82);
   font-family: 'Open Sans', sans-serif;
+  font-weight: 100;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -76,12 +80,16 @@ body {
   max-width: 1000px;
   margin: 20px auto 100px auto;
   padding: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .row-wrapper {
+  display: flex;
+  align-items: center;
   height: 87px;
+  transition: background-color 0.3s ease-out;
 }
 
 ul {
@@ -105,24 +113,32 @@ ul {
 
 /* rows */
 .row {
-  padding: 20px 0;
-  height: 100%;
-  transition: all 0.3s ease-out;
-  border-top: 1px solid #000000ac;
+  width: 100%;
 }
 
-.row:hover {
-  background-color: rgba(26, 26, 26, 0.9);
+.row-wrapper:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .table__head {
   padding: 10px 0 5px 0;
   font-size: 0;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #55608f;
+  transition: background-color 0.3s ease-out;
+}
+
+.table__head li {
+  cursor: pointer;
+  user-select: none;
 }
 
 .table__head:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+.table__body {
+  height: 450px;
+  overflow-x: auto;
 }
 
 .block-err {
@@ -135,6 +151,7 @@ ul {
   width: 100vw;
   height: 100vh;
   z-index: 5;
+  background-color: rgba(255, 141, 141, 0.1);
 }
 
 .content-err {
@@ -181,4 +198,18 @@ ul {
 
 .exit:active svg {
   fill: #121212;
+}
+
+.flex {
+  display: flex;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }

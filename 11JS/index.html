@@ -10,62 +10,54 @@
   <body>
     <div class="container">
       <div class="settings">
-        <form class="form">
+        <div class="form">
           <h2>Добавить студента</h2>
           <ul class="list">
             <li>
-              <label for="student__name">Имя</label>
-              <input class="student" id="student__name" type="text" />
+              <label>Имя</label>
+              <input class="student student__name" type="text" />
             </li>
             <li>
-              <label for="student__sname">Фамилия</label>
-              <input class="student" id="student__sname" type="text" />
+              <label>Фамилия</label>
+              <input class="student student__sname" type="text" />
             </li>
             <li>
-              <label for="student__lname">Отчетство</label>
-              <input class="student" id="student__lname" type="text" />
+              <label>Отчетство</label>
+              <input class="student student__lname" type="text" />
             </li>
             <li>
-              <label for="student__bdate">Дата рождения</label>
-              <input class="student" id="student__bdate" type="date" />
+              <label>Дата рождения</label>
+              <input class="student student__bdate" type="date" />
             </li>
             <li>
-              <label for="student__startLearn">Год начала обучения</label>
-              <input class="student" id="student__startLearn" type="text" />
+              <label>Год начала обучения</label>
+              <input class="student student__startLearn" type="text" />
             </li>
             <li>
-              <label for="student__faculty">Факультет</label>
-              <input class="student" id="student__faculty" type="text" />
+              <label>Факультет</label>
+              <input class="student student__faculty" type="text" />
             </li>
             <button type="button" class="btn-add">Добавить судента</button>
           </ul>
-        </form>
+        </div>
         <div class="filter__container">
           <h2>Показать студентов</h2>
           <ul class="filter__list">
             <li class="filter__list-item">
-              <label for="">по ФИО</label>
-              <input class="filter filter-fio" type="text" id="inputFio" />
+              <label>по ФИО</label>
+              <input class="filter filter-fio" type="text" />
             </li>
             <li class="filter__list-item">
-              <label for="fac">по факультету</label>
-              <input class="filter filter-fac" type="text" id="inputFac" />
+              <label>по факультету</label>
+              <input class="filter filter-fac" type="text" />
             </li>
             <li class="filter__list-item">
-              <label for="date-start">по году начала обучения </label>
-              <input
-                class="filter filter-startlearn"
-                type="text"
-                id="inputDateStart"
-              />
+              <label>по году начала обучения </label>
+              <input class="filter filter-startlearn" type="text" />
             </li>
             <li class="filter__list-item">
-              <label for="date-end">по году окончания обучения</label>
-              <input
-                class="filter filter-endlearn"
-                type="text"
-                id="inputDateEnd"
-              />
+              <label>по году окончания обучения</label>
+              <input class="filter filter-endlearn" type="text" />
             </li>
           </ul>
         </div>
@@ -73,10 +65,10 @@
       <div class="table">
         <div class="row table__head">
           <ul>
-            <li>ФИО</li>
-            <li>Факультет</li>
-            <li>Дата рождения и возраст</li>
-            <li>Годы обучения</li>
+            <li class="sort-fio">ФИО</li>
+            <li class="sort-fac">Факультет</li>
+            <li class="sort-age">Дата рождения и возраст</li>
+            <li class="sort-learning">Годы обучения</li>
           </ul>
         </div>
         <div class="table__body"></div>

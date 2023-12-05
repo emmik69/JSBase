@@ -1,37 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-  //прост чтобы успеть до дедлыйна (´• ω •`)
-  const addBtn = document.querySelector('.btn-add');
-
   const buildTable = async () => {
     const response = await fetch(`http://localhost:3000/todos`);
     const array = await response.json();
-    console.log(array);
-    let table = document.querySelector('.table__body');
     table.innerHTML = '';
     for (let student of array) {
-      let fioObj = student.sname + '\n' + student.fname + '\n' + student.lname;
-      let old = age(student.bdate);
-      let row = `<section class="row-wrapper">
-            <article class="row nfl">
-              <ul>
-                <li>${fioObj}</li>
-                <li>${student.fac}</li>
-                <li>${student.bdate} (${old})</li>
-                <li>${student.startlearn}-${
-        parseInt(student.startlearn) + 4
-      } (${course(parseInt(student.startlearn))})</li>
-              </ul>
-            </article>
-          </section>`;
-      table.innerHTML += row;
+      addStudentToTable(student);
     }
   };
 
   const addStudentToTable = (student) => {
-    let table = document.querySelector('.table__body');
     let fioObj = student.sname + '\n' + student.fname + '\n' + student.lname;
     let old = age(student.bdate);
-    let row = `<section class="row-wrapper">
+    let row = `<section class="row-wrapper" id="${student.id}">
             <article class="row nfl">
               <ul>
                 <li>${fioObj}</li>
@@ -44,17 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
             </article>
           </section>`;
     table.innerHTML += row;
+    let rows = document.querySelectorAll('.row-wrapper');
+    rows.forEach((el) => {
+      el.addEventListener('click', () => {
+        rows.forEach((r) => r.classList.remove('selected'));
+        el.classList.add('selected');
+      });
+    });
   };
 
   const onAddStudent = async () => {
-    const inputStudentName = document.getElementById('student__name').value;
-    const inputStudentSName = document.getElementById('student__sname').value;
-    const inputStudentLName = document.getElementById('student__lname').value;
-    const inputStudentBDate = document.getElementById('student__bdate').value;
-    const inputStudentStLearn = document.getElementById(
-      'student__startLearn'
+    const inputStudentName = document.querySelector('.student__name').value;
+    const inputStudentSName = document.querySelector('.student__sname').value;
+    const inputStudentLName = document.querySelector('.student__lname').value;
+    const inputStudentBDate = document.querySelector('.student__bdate').value;
+    const inputStudentStLearn = document.querySelector(
+      '.student__startLearn'
     ).value;
-    const inputStudentFac = document.getElementById('student__faculty').value;
+    const inputStudentFac = document.querySelector('.student__faculty').value;
 
     if (
       inputStudentName !== '' &&
@@ -68,23 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
       inputStudentFac !== ''
     ) {
       let tempDate = new Date(inputStudentBDate);
-      let input = {
-        fname: inputStudentName,
-        sname: inputStudentSName,
-        lname: inputStudentLName,
-        bdate: `${checkDate(tempDate.getDate())}.${checkDate(
-          tempDate.getMonth() + 1
-        )}.${tempDate.getFullYear()}`,
-        startlearn: inputStudentStLearn,
-        fac: inputStudentFac,
-      };
 
-      document.getElementById('student__name').value = '';
-      document.getElementById('student__sname').value = '';
-      document.getElementById('student__lname').value = '';
-      document.getElementById('student__bdate').value = '';
-      document.getElementById('student__startLearn').value = '';
-      document.getElementById('student__faculty').value = '';
+      document.querySelector('.student__name').value = '';
+      document.querySelector('.student__sname').value = '';
+      document.querySelector('.student__lname').value = '';
+      document.querySelector('.student__bdate').value = '';
+      document.querySelector('.student__startLearn').value = '';
+      document.querySelector('.student__faculty').value = '';
 
       const responseId = await fetch(`http://localhost:3000/todos`);
       const idn = await responseId.json();
@@ -108,8 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }),
       });
 
-      const todoITem = await response.json();
-      addStudentToTable(todoITem);
+      const student = await response.json();
+      addStudentToTable(student);
     } else {
       const err = document.querySelector('.block-err');
       err.innerHTML = ` <div class="content-err">
@@ -142,12 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const cross = document.querySelector('.cross');
       cross.addEventListener('click', () => {
-        err.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-        err.style.display = 'none';
+        err.classList.remove('flex');
         err.innerHTML = '';
       });
-      err.style.display = 'flex';
-      err.style.backgroundColor = 'rgba(255, 141, 141, 0.1)';
+      err.classList.add('flex');
     }
   };
 
@@ -173,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return x;
   };
 
-  async function globalFilter(filters) {
+  const globalFilter = async (filters) => {
     const response = await fetch(`http://localhost:3000/todos`);
     const data = await response.json();
     let array = data.filter((obj) => {
@@ -197,28 +172,26 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     });
 
-    let table = document.querySelector('.table__body');
+    let sortData = array.sort((objA, objB) => {
+      let sort = objA[sortColumn] < objB[sortColumn];
+      if (sortDir === false) sort = objA[sortColumn] > objB[sortColumn];
+      if (sort) return -1;
+    });
     table.innerHTML = '';
-    for (let student of array) {
-      let fioObj = student.sname + '\n' + student.fname + '\n' + student.lname;
-      let old = age(student.bdate);
-      let row = `<section class="row-wrapper">
-            <article class="row nfl">
-              <ul>
-                <li>${fioObj}</li>
-                <li>${student.fac}</li>
-                <li>${student.bdate} (${old})</li>
-                <li>${student.startlearn}-${
-        parseInt(student.startlearn) + 4
-      } (${course(parseInt(student.startlearn))})</li>
-              </ul>
-            </article>
-          </section>`;
-      table.innerHTML += row;
+    for (let student of sortData) {
+      addStudentToTable(student);
     }
-  }
+  };
 
+  const addBtn = document.querySelector('.btn-add');
+  const sortFio = document.querySelector('.sort-fio');
+  const sortFac = document.querySelector('.sort-fac');
+  const sortAge = document.querySelector('.sort-age');
+  const sortLearning = document.querySelector('.sort-learning');
   const filterInputAll = document.querySelectorAll('.filter');
+  let table = document.querySelector('.table__body');
+  let sortDir = true;
+  let sortColumn = 'fname';
   let filters = {
     fio: '',
     fac: '',
@@ -240,6 +213,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  buildTable();
+  document.addEventListener('keydown', async (event) => {
+    if (event.key === 'Delete') {
+      const selectedRow = document.querySelector('.row-wrapper.selected');
+      if (
+        selectedRow &&
+        confirm('Вы действительно хотите удалить этот элемент?')
+      ) {
+        await fetch(`http://localhost:3000/todos/${selectedRow.id}`, {
+          method: 'delete',
+        });
+        selectedRow.remove();
+      }
+    }
+  });
+  sortFio.addEventListener('click', () => {
+    sortColumn = 'sname';
+    sortDir = !sortDir;
+    globalFilter(filters);
+  });
+  sortFac.addEventListener('click', () => {
+    sortColumn = 'fac';
+    sortDir = !sortDir;
+    globalFilter(filters);
+  });
+  sortAge.addEventListener('click', () => {
+    sortColumn = 'bdate';
+    sortDir = !sortDir;
+    globalFilter(filters);
+  });
+  sortLearning.addEventListener('click', () => {
+    sortColumn = 'startlearn';
+    sortDir = !sortDir;
+    globalFilter(filters);
+  });
   addBtn.addEventListener('click', onAddStudent);
+  buildTable();
 });
