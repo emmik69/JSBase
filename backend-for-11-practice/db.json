@@ -1,3 +1,49 @@
 {
-  "todos": []
+  "todos": [
+    {
+      "id": 1,
+      "fname": "Эмм",
+      "sname": "ЛИт",
+      "lname": "Ник",
+      "bdate": "17.08.2004",
+      "startLearn": "2022",
+      "fac": "ауц"
+    },
+    {
+      "id": 2,
+      "fname": "Эмм2",
+      "sname": "Эмм3Э",
+      "lname": "Эмм4",
+      "bdate": "05.05.2005",
+      "startLearn": "2009",
+      "fac": "пиав"
+    },
+    {
+      "id": 3,
+      "fname": "ааа",
+      "sname": "аааа",
+      "lname": "ааа",
+      "bdate": "04.12.2023",
+      "startLearn": "2001",
+      "fac": "аааа"
+    },
+    {
+      "id": 4,
+      "fname": "ббб",
+      "sname": "ббб",
+      "lname": "ббб",
+      "bdate": "05.12.2023",
+      "startLearn": "2002",
+      "fac": "ббб"
+    },
+    {
+      "id": 5,
+      "fname": "ввв",
+      "sname": "ввв",
+      "lname": "ввв",
+      "bdate": "06.12.2023",
+      "startLearn": "2003",
+      "fac": "ввв"
+    }
+  ]
 }

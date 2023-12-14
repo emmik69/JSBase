@@ -3,28 +3,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const response = await fetch(`http://localhost:3000/todos`);
     const array = await response.json();
     table.innerHTML = '';
-    for (let student of array) {
+    for (const student of array) {
       addStudentToTable(student);
     }
   };
 
   const addStudentToTable = (student) => {
-    let fioObj = student.sname + '\n' + student.fname + '\n' + student.lname;
-    let old = age(student.bdate);
-    let row = `<section class="row-wrapper" id="${student.id}">
+    const fioObj = student.sname + '\n' + student.fname + '\n' + student.lname;
+    const old = age(student.bdate);
+    const row = `<section class="row-wrapper" id="${student.id}">
             <article class="row nfl">
               <ul>
                 <li>${fioObj}</li>
                 <li>${student.fac}</li>
                 <li>${student.bdate} (${old})</li>
-                <li>${student.startlearn}-${
-      parseInt(student.startlearn) + 4
-    } (${course(parseInt(student.startlearn))})</li>
+                <li>${student.startLearn}-${
+      parseInt(student.startLearn) + 4
+    } (${course(parseInt(student.startLearn))})</li>
               </ul>
             </article>
           </section>`;
     table.innerHTML += row;
-    let rows = document.querySelectorAll('.row-wrapper');
+    const rows = document.querySelectorAll('.row-wrapper');
     rows.forEach((el) => {
       el.addEventListener('click', () => {
         rows.forEach((r) => r.classList.remove('selected'));
@@ -34,34 +34,37 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const onAddStudent = async () => {
-    const inputStudentName = document.querySelector('.student__name').value;
-    const inputStudentSName = document.querySelector('.student__sname').value;
-    const inputStudentLName = document.querySelector('.student__lname').value;
-    const inputStudentBDate = document.querySelector('.student__bdate').value;
-    const inputStudentStLearn = document.querySelector(
-      '.student__startLearn'
-    ).value;
-    const inputStudentFac = document.querySelector('.student__faculty').value;
+    const form = {
+      name: document.querySelector('.student__name'),
+      surname: document.querySelector('.student__sname'),
+      lastname: document.querySelector('.student__lname'),
+      studentBDate: document.querySelector('.student__bdate'),
+      studentStLearn: document.querySelector('.student__startLearn'),
+      studentFac: document.querySelector('.student__faculty'),
+    };
 
-    if (
-      inputStudentName !== '' &&
-      inputStudentSName !== '' &&
-      inputStudentLName !== '' &&
-      new Date(inputStudentBDate) >= new Date('1900-01-01') &&
-      new Date(inputStudentBDate) <= new Date() &&
-      parseInt(inputStudentStLearn) &&
-      parseInt(inputStudentStLearn) >= 2000 &&
-      parseInt(inputStudentStLearn) <= new Date().getFullYear() &&
-      inputStudentFac !== ''
-    ) {
-      let tempDate = new Date(inputStudentBDate);
+    const validators = {
+      studentBDate: (value) =>
+        new Date(value.value) >= new Date('1900-01-01') &&
+        new Date(value.value) <= new Date(),
+      studentStLearn: (value) =>
+        parseInt(value.value) &&
+        parseInt(value.value) >= 2000 &&
+        parseInt(value.value) <= new Date().getFullYear(),
+    };
 
-      document.querySelector('.student__name').value = '';
-      document.querySelector('.student__sname').value = '';
-      document.querySelector('.student__lname').value = '';
-      document.querySelector('.student__bdate').value = '';
-      document.querySelector('.student__startLearn').value = '';
-      document.querySelector('.student__faculty').value = '';
+    let success = false;
+    for (const key in form) {
+      if (validators[key]) {
+        success = validators[key](form[key]);
+      } else {
+        success = !!form[key].value;
+      }
+      if (!success) break;
+    }
+
+    if (success) {
+      const tempDate = new Date(form.studentBDate.value);
 
       const responseId = await fetch(`http://localhost:3000/todos`);
       const idn = await responseId.json();
@@ -73,17 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: parseInt(idn[idn.length - 1].id) + 1,
-          fname: inputStudentName,
-          sname: inputStudentSName,
-          lname: inputStudentLName,
+          id: idn.length ? parseInt(idn[idn.length - 1].id) + 1 : 0,
+          fname: form.name.value,
+          sname: form.surname.value,
+          lname: form.lastname.value,
           bdate: `${checkDate(tempDate.getDate())}.${checkDate(
             tempDate.getMonth() + 1
           )}.${tempDate.getFullYear()}`,
-          startlearn: inputStudentStLearn,
-          fac: inputStudentFac,
+          startLearn: form.studentStLearn.value,
+          fac: form.studentFac.value,
         }),
       });
+
+      for (const key in form) {
+        form[key].value = '';
+      }
 
       const student = await response.json();
       addStudentToTable(student);
@@ -129,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const age = (str) => {
     let [date, month, year] = str.match(/(\d+)/g);
     --month;
-    let now = new Date();
-    let nowYear = now.getFullYear(),
+    const now = new Date();
+    const nowYear = now.getFullYear(),
       nowMonth = now.getMonth(),
       nowDate = now.getDate();
     return nowYear - year - (0 > (nowMonth - month || nowDate - date));
@@ -151,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const globalFilter = async (filters) => {
     const response = await fetch(`http://localhost:3000/todos`);
     const data = await response.json();
-    let array = data.filter((obj) => {
+    const array = data.filter((obj) => {
       return (
         (filters.fio
           ? (
@@ -165,50 +172,50 @@ document.addEventListener('DOMContentLoaded', () => {
         (filters.fac
           ? obj.fac.toLowerCase().includes(filters.fac.toLowerCase())
           : true) &&
-        (filters.startlearn ? obj.startlearn == filters.startlearn : true) &&
+        (filters.startLearn ? obj.startLearn == filters.startLearn : true) &&
         (filters.endlearn
-          ? parseInt(obj.startlearn) + 4 == filters.endlearn
+          ? parseInt(obj.startLearn) + 4 == filters.endlearn
           : true)
       );
     });
 
-    let sortData = array.sort((objA, objB) => {
+    const sortData = array.sort((objA, objB) => {
       let sort = objA[sortColumn] < objB[sortColumn];
       if (sortDir === false) sort = objA[sortColumn] > objB[sortColumn];
       if (sort) return -1;
     });
     table.innerHTML = '';
-    for (let student of sortData) {
+    for (const student of sortData) {
       addStudentToTable(student);
     }
   };
 
-  const addBtn = document.querySelector('.btn-add');
-  const sortFio = document.querySelector('.sort-fio');
-  const sortFac = document.querySelector('.sort-fac');
-  const sortAge = document.querySelector('.sort-age');
-  const sortLearning = document.querySelector('.sort-learning');
-  const filterInputAll = document.querySelectorAll('.filter');
-  let table = document.querySelector('.table__body');
-  let sortDir = true;
-  let sortColumn = 'fname';
-  let filters = {
-    fio: '',
-    fac: '',
-    startlearn: '',
-    endlearn: '',
-  };
+  const addBtn = document.querySelector('.btn-add'),
+    sortFio = document.querySelector('.sort-fio'),
+    sortFac = document.querySelector('.sort-fac'),
+    sortAge = document.querySelector('.sort-age'),
+    sortLearning = document.querySelector('.sort-learning'),
+    table = document.querySelector('.table__body'),
+    filterInputAll = document.querySelectorAll('.filter');
+
+  let sortDir = true,
+    sortColumn = 'fname',
+    filters = {
+      fio: '',
+      fac: '',
+      startLearn: '',
+      endlearn: '',
+    };
+
   filterInputAll.forEach((element) => {
     element.addEventListener('keyup', () => {
-      if (element.classList.contains('filter-fio')) {
-        filters.fio = element.value;
-      } else if (element.classList.contains('filter-fac')) {
-        filters.fac = element.value;
-      } else if (element.classList.contains('filter-startlearn')) {
-        filters.startlearn = element.value;
-      } else if (element.classList.contains('filter-endlearn')) {
-        filters.endlearn = element.value;
-      }
+      filters = Object.fromEntries(
+        Object.entries(filters).map(([key, value]) => {
+          if (element.className.includes(key.toLowerCase()))
+            return [key, element.value];
+          return [key, value];
+        })
+      );
       globalFilter(filters);
     });
   });
@@ -227,26 +234,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-  sortFio.addEventListener('click', () => {
-    sortColumn = 'sname';
-    sortDir = !sortDir;
-    globalFilter(filters);
+
+  [
+    { value: sortFio, column: 'sname' },
+    { value: sortFac, column: 'fac' },
+    { value: sortAge, column: 'bdate' },
+    { value: sortLearning, column: 'startLearn' },
+  ].forEach(({ value, column }) => {
+    value.addEventListener('click', () => {
+      sortColumn = column;
+      sortDir = !sortDir;
+      globalFilter(filters);
+    });
   });
-  sortFac.addEventListener('click', () => {
-    sortColumn = 'fac';
-    sortDir = !sortDir;
-    globalFilter(filters);
-  });
-  sortAge.addEventListener('click', () => {
-    sortColumn = 'bdate';
-    sortDir = !sortDir;
-    globalFilter(filters);
-  });
-  sortLearning.addEventListener('click', () => {
-    sortColumn = 'startlearn';
-    sortDir = !sortDir;
-    globalFilter(filters);
-  });
+
   addBtn.addEventListener('click', onAddStudent);
   buildTable();
 });
